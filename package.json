@@ -9,7 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@heroicons/react": "^1.0.6",
     "@reduxjs/toolkit": "^1.8.1",
+    "@tailwindcss/line-clamp": "^0.4.0",
     "autoprefixer": "^10.4.7",
     "axios": "^0.27.2",
     "daisyui": "^2.14.3",
