@@ -1,11 +1,13 @@
-import { MinusIcon, PlusIcon } from "@heroicons/react/outline";
 import Head from "next/head";
 import Image from "next/image";
+import { useState } from "react";
 import Navbar from "../../components/Navbar";
 import PromoCard from '../../components/PromoCard';
+import QuantityInput from '../../components/QuantityInput';
 import { formatIndonesianCurrency } from "../../utils/string";
 
 const ProductDetail = () => {
+  const [quantity, setQuantity] = useState(0)
   return (
     <>
       <Head>
@@ -55,17 +57,11 @@ const ProductDetail = () => {
           </p>
           <div className="flex items-center mt-8">
             <span className="mr-4">Quantity</span>
-            <div className="border border-secondary flex">
-              <button className="flex justify-center items-center border-r border-secondary w-8 h-8">
-                <MinusIcon className="text-secondary w-6 p-1" />
-              </button>
-              <div className="px-4 py-1 flex justify-center items-center text-center text-secondary text-sm">
-                0
-              </div>
-              <button className="flex justify-center items-center border-l border-secondary w-8 h-8">
-                <PlusIcon className="text-secondary w-6 p-1" />
-              </button>
-            </div>
+            <QuantityInput 
+              quantity={quantity}
+              onAdd={() => setQuantity(quantity + 1)}
+              onSubstract={() => setQuantity(Math.max(quantity - 1, 0))}
+            />
           </div>
           <div className="flex mt-8 gap-8">
             <button className="btn btn-secondary rounded-lg">
