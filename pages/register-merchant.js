@@ -81,7 +81,7 @@ const Register = () => {
               </button>
             </form>
             <div className="text-center mt-4">
-              Hanya ingin berbelanja?{" "}
+              <p>Hanya ingin berbelanja?</p>
               <Link href="/register">
                 <span className="text-primary cursor-pointer hover:text-primary-focus">
                   Daftarkan akun pengguna Anda!
