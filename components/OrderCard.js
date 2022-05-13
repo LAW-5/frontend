@@ -1,8 +1,9 @@
-import { formatIndonesianCurrency } from '../utils/string';
+import { formatIndonesianCurrency } from "../utils/string";
 
-const DISABLE_BUTTON_LIST = ["Selesai", "Dibatalkan"];
+const USER_FINISHED_STATUSES = ["Selesai", "Dibatalkan"];
+const MERCHANT_FINISHED_STATUSES = ["Dikirim", "Selesai", "Dibatalkan"];
 
-const OrderCard = ({ status }) => {
+const OrderCard = ({ status, isMerchant }) => {
   return (
     <div className="card w-full bg-base-100 shadow-xl mb-4">
       <div className="card-body">
@@ -20,10 +21,20 @@ const OrderCard = ({ status }) => {
           <p>Bambang Setiabudi</p>
           <p>Jl. Mawar No.7 RT02 RW01, Depok</p>
         </div>
-        {!DISABLE_BUTTON_LIST.includes(status) && (
+        {!isMerchant && !USER_FINISHED_STATUSES.includes(status) && (
           <button className="btn btn-primary rounded-lg w-fit mt-2">
             SELESAI
           </button>
+        )}
+        {isMerchant && !MERCHANT_FINISHED_STATUSES.includes(status) && (
+          <div className="flex gap-4">
+            <button className="btn btn-primary rounded-lg w-fit mt-2">
+              PRODUK SIAP DIKIRIM
+            </button>
+            <button className="btn btn-secondary rounded-lg w-fit mt-2">
+              BATALKAN PESANAN
+            </button>
+          </div>
         )}
       </div>
     </div>

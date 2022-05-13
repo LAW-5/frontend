@@ -4,7 +4,7 @@ import Navbar from "../../components/Navbar";
 import OrderCard from '../../components/OrderCard';
 import UserDashboardDrawer from "../../components/UserDashboardDrawer";
 
-const Notification = () => {
+const OrderHistoryUser = () => {
   return (
     <>
       <Head>
@@ -36,4 +36,4 @@ const Notification = () => {
   );
 };
 
-export default Notification;
+export default OrderHistoryUser;

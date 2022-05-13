@@ -4,7 +4,7 @@ import Navbar from "../../components/Navbar";
 import NotificationCard from '../../components/NotificationCard';
 import UserDashboardDrawer from "../../components/UserDashboardDrawer";
 
-const Notification = () => {
+const NotificationUser = () => {
   return (
     <>
       <Head>
@@ -37,4 +37,4 @@ const Notification = () => {
   );
 };
 
-export default Notification;
+export default NotificationUser;
