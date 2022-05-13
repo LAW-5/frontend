@@ -11,3 +11,11 @@
 .btn-primary, .btn-secondary {
   color: white !important;
 }
+
+.table :where(thead, tfoot) :where(th, td) {
+  background-color: transparent !important;
+}
+
+.table thead {
+  @apply border-b-2
+}
