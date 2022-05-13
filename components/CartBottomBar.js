@@ -1,4 +1,5 @@
-import { formatIndonesianCurrency } from '../utils/string';
+import Link from "next/link";
+import { formatIndonesianCurrency } from "../utils/string";
 
 const CartBottomBar = ({ total }) => {
   return (
@@ -11,7 +12,11 @@ const CartBottomBar = ({ total }) => {
               {formatIndonesianCurrency(total)}
             </p>
           </div>
-          <button className="btn btn-primary rounded-lg mr-8">CHECKOUT</button>
+          <Link href="/order">
+            <button className="btn btn-primary rounded-lg mr-8">
+              CHECKOUT
+            </button>
+          </Link>
         </div>
       </div>
     </div>
