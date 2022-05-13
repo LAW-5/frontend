@@ -84,7 +84,7 @@ const Register = () => {
               Hanya ingin berbelanja?{" "}
               <Link href="/register">
                 <span className="text-primary cursor-pointer hover:text-primary-focus">
-                  Daftarkan akun Anda!
+                  Daftarkan akun pengguna Anda!
                 </span>
               </Link>
             </div>
