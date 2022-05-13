@@ -69,7 +69,7 @@ const Register = () => {
                   </span>
                 </label>
                 <label
-                  className="btn btn-secondary rounded-lg w-36 text-white"
+                  className="btn btn-secondary rounded-lg w-36"
                   htmlFor="merchant-picture"
                 >
                   UPLOAD
