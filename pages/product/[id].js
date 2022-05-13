@@ -12,7 +12,6 @@ const ProductDetail = () => {
     <>
       <Head>
         <title>Product Name | EXIT COMPUTER MANGO TWO</title>
-        <link rel="icon" href="/favicon.ico" />
       </Head>
       <Navbar />
       <main className="mx-auto max-w-6xl pt-16 flex">

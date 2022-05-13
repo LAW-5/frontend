@@ -24,7 +24,6 @@ export default function Home() {
           name="description"
           content="It is an e-commerce application that provides various computer products and accessories at competitive prices."
         />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
       <Navbar />
       <main className="mx-auto max-w-6xl pt-4">

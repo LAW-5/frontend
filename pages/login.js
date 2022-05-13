@@ -11,7 +11,6 @@ const Register = () => {
           name="description"
           content="Login to your account on EXIT COMPUTER MANGO TWO"
         />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="mx-auto pt-12">
         <AuthTitle />
