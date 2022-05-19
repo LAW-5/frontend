@@ -1,40 +1,26 @@
-import Head from "next/head";
-import Banner from "../../components/Banner";
-import MerchantDashboardDrawer from "../../components/MerchantDashboardDrawer";
-import NavbarMerchant from "../../components/NavbarMerchant";
-import PromoMerchantCard from "../../components/PromoMerchantCard";
 
-const Promo = () => {
-  return (
-    <>
-      <Head>
-        <title>Merchant Dashboard | EXIT COMPUTER MANGO TWO</title>
-      </Head>
-      <div className="absolute top-0 left-0 w-full">
-        <NavbarMerchant />
-        <main className="mx-auto max-w-6xl pt-4">
-          <Banner title="Merchant Dashboard" />
-          <h2 className="mt-8 mb-4 text-2xl font-bold text-center">
-            List of Promo
-          </h2>
-          <div className="flex justify-center">
-            <label htmlFor="my-modal-4" className="btn btn-primary rounded-lg modal-button">ADD PROMO</label>
-            <input type="checkbox" id="my-modal-4" className="modal-toggle" />
-            <label htmlFor="my-modal-4" className="modal cursor-pointer">
+const ProductModal = ({ isUpdate, modalId, name, price, desc, stock }) => {
+    return (
+        <>
+            <input type="checkbox" id={modalId} className="modal-toggle" />
+            <label htmlFor={modalId} className="modal cursor-pointer">
               <label className="modal-box relative" htmlFor="">
-                <h3 className="text-3xl font-bold text-center pt-4">Add Promo</h3>
+                <h3 className="text-3xl font-bold text-center pt-4">
+                    { isUpdate ? "Edit" : "Add" } Product
+                </h3>
                 
                 <form className="p-4">
                 <div className="form-control">
                   <label className="label">
                     <span className="label-text !text-lg !font-semibold">
-                      Kode Promo
+                      Name
                     </span>
                   </label>
                   <label className="input-group">
                     <input
                       type="text"
-                      placeholder="Masukkan kode promo"
+                      placeholder="Product name"
+                      value={name}
                       className="input input-bordered !rounded-md w-full"
                     />
                   </label>
@@ -42,13 +28,14 @@ const Promo = () => {
                 <div className="form-control">
                   <label className="label">
                     <span className="label-text !text-lg !font-semibold">
-                      Persentase Diskon
+                      Price
                     </span>
                   </label>
                   <label className="input-group">
                     <input
                       type="text"
-                      placeholder="Masukkan persentase diskon"
+                      placeholder="999999"
+                      value={price}
                       className="input input-bordered !rounded-md w-full"
                     />
                   </label>
@@ -56,13 +43,14 @@ const Promo = () => {
                 <div className="form-control">
                   <label className="label">
                     <span className="label-text !text-lg !font-semibold">
-                      Potongan Maksimal
+                      Initial Stock
                     </span>
                   </label>
                   <label className="input-group">
                     <input
                       type="text"
-                      placeholder="Masukkan potongan maksimal"
+                      placeholder="99999"
+                      value={stock}
                       className="input input-bordered !rounded-md w-full"
                     />
                   </label>
@@ -70,34 +58,39 @@ const Promo = () => {
                 <div className="form-control">
                   <label className="label">
                     <span className="label-text !text-lg !font-semibold">
-                      Batas Pemakaian
+                      Description
                     </span>
                   </label>
                   <label className="input-group">
                     <input
                       type="text"
-                      placeholder="Masukkan batas pemakaian"
+                      value={desc}
                       className="input input-bordered !rounded-md w-full"
                     />
                   </label>
+                </div>
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text !text-lg !font-semibold">
+                      Product Picture
+                    </span>
+                  </label>
+                  <label
+                    className="btn btn-secondary rounded-lg w-36"
+                    htmlFor="product-picture"
+                  >
+                    UPLOAD
+                  </label>
+                  <input type="file" hidden id="product-picture" />
                 </div>
                 <button className="btn btn-primary rounded-lg mx-auto block mt-8">
-                  Create Promo
+                  { isUpdate ? "Update" : "Create" } Product
                 </button>
               </form>
               </label>
             </label>
-          </div>
-          <PromoMerchantCard />
-          <PromoMerchantCard />
-          <PromoMerchantCard />
-          <PromoMerchantCard />
-          <PromoMerchantCard />
-        </main>
-      </div>
-      <MerchantDashboardDrawer />
-    </>
-  );
+        </>
+    );
 };
 
-export default Promo;
+export default ProductModal;
