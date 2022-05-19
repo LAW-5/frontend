@@ -29,11 +29,11 @@ const EWallet = () => {
             </h3>
             <p className="text-base-100 text-5xl font-bold">{formatIndonesianCurrency(100000000)}</p>
 
-            <label for="my-modal-4" class="btn btn-primary modal-button rounded-lg mt-8">TOP UP</label>
-            <input type="checkbox" id="my-modal-4" class="modal-toggle" />
-            <label for="my-modal-4" class="modal cursor-pointer">
-              <label class="modal-box relative" for="">
-                <h3 class="text-3xl font-bold text-center pt-4">Topup E-Wallet</h3>
+            <label htmlFor="my-modal-4" className="btn btn-primary modal-button rounded-lg mt-8">TOP UP</label>
+            <input type="checkbox" id="my-modal-4" className="modal-toggle" />
+            <label htmlFor="my-modal-4" className="modal cursor-pointer">
+              <label className="modal-box relative" htmlFor="">
+                <h3 className="text-3xl font-bold text-center pt-4">Topup E-Wallet</h3>
                 
                 <form className="p-4">
                 <div className="form-control">

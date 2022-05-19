@@ -31,7 +31,7 @@ const Product = () => {
             List of Product
           </h2>
           <div className="flex justify-center">
-            <label for="my-modal-4" class="btn btn-primary rounded-lg modal-button">ADD PRODUCT</label>
+            <label htmlFor="my-modal-4" className="btn btn-primary rounded-lg modal-button">ADD PRODUCT</label>
             <ProductModal isUpdate={false} modalId="my-modal-4" />
           </div>
           {loading ? (

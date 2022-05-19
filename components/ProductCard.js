@@ -39,7 +39,7 @@ const ProductCard = ({
               </small>
               <div className="flex justify-end">
                 <div className="flex">
-                  <label for="edit-modal" className="btn btn-ghost" ><PencilIcon className="text-neutral w-6" /></label>
+                  <label htmlFor="edit-modal" className="btn btn-ghost" ><PencilIcon className="text-neutral w-6" /></label>
                   <ProductModal
                     isUpdate={true}
                     modalId="edit-modal"

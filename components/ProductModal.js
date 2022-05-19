@@ -2,10 +2,10 @@
 const ProductModal = ({ isUpdate, modalId, name, price, desc, stock }) => {
     return (
         <>
-            <input type="checkbox" id={modalId} class="modal-toggle" />
-            <label for={modalId} class="modal cursor-pointer">
-              <label class="modal-box relative" for="">
-                <h3 class="text-3xl font-bold text-center pt-4">
+            <input type="checkbox" id={modalId} className="modal-toggle" />
+            <label htmlFor={modalId} className="modal cursor-pointer">
+              <label className="modal-box relative" htmlFor="">
+                <h3 className="text-3xl font-bold text-center pt-4">
                     { isUpdate ? "Edit" : "Add" } Product
                 </h3>
                 
