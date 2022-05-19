@@ -10,6 +10,8 @@ const ProductList = ({ products, isMerchant }) => {
           imgUrl={product.imageUrl}
           name={product.name}
           price={product.price}
+          desc={product.description}
+          stock={product.stock}
           isMerchant={isMerchant}
         />
       ))}

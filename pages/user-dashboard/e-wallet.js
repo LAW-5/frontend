@@ -28,7 +28,34 @@ const EWallet = () => {
               Saldo E-Wallet
             </h3>
             <p className="text-base-100 text-5xl font-bold">{formatIndonesianCurrency(100000000)}</p>
-            <button className="btn btn-primary rounded-lg mt-8">TOP UP</button>
+
+            <label for="my-modal-4" class="btn btn-primary modal-button rounded-lg mt-8">TOP UP</label>
+            <input type="checkbox" id="my-modal-4" class="modal-toggle" />
+            <label for="my-modal-4" class="modal cursor-pointer">
+              <label class="modal-box relative" for="">
+                <h3 class="text-3xl font-bold text-center pt-4">Topup E-Wallet</h3>
+                
+                <form className="p-4">
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text !text-lg !font-semibold">
+                      Nominal
+                    </span>
+                  </label>
+                  <label className="input-group">
+                    <input
+                      type="text"
+                      placeholder="Masukkan nominal"
+                      className="input input-bordered !rounded-md w-full"
+                    />
+                  </label>
+                </div>
+                <button className="btn btn-primary rounded-lg mx-auto block mt-8">
+                  Topup
+                </button>
+              </form>
+              </label>
+            </label>
           </div>
         </main>
       </div>

@@ -4,6 +4,7 @@ import Banner from "../../components/Banner";
 import MerchantDashboardDrawer from "../../components/MerchantDashboardDrawer";
 import NavbarMerchant from "../../components/NavbarMerchant";
 import ProductList from "../../components/ProductList";
+import ProductModal from "../../components/ProductModal";
 import { getAllProducts } from '../../models/product';
 
 const Product = () => {
@@ -30,12 +31,8 @@ const Product = () => {
             List of Product
           </h2>
           <div className="flex justify-center">
-            <label
-              htmlFor="product-modal"
-              className="btn btn-primary rounded-lg"
-            >
-              ADD PRODUCT
-            </label>
+            <label for="my-modal-4" class="btn btn-primary rounded-lg modal-button">ADD PRODUCT</label>
+            <ProductModal isUpdate={false} modalId="my-modal-4" />
           </div>
           {loading ? (
             <div className="mx-auto h-96 flex justify-center items-center">
