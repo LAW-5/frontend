@@ -1,8 +1,25 @@
 import Head from "next/head";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 import AuthTitle from "../components/AuthTitle";
+import { login as loginUser } from "../models/auth";
+import { login } from '../redux/features/auth';
 
 const Register = () => {
+  const { handleSubmit, register } = useForm();
+  const router = useRouter();
+  const dispatch = useDispatch();
+
+  const onSubmit = async (data) => {
+    const res = await loginUser(data);
+    if (res.status === 200) {
+      dispatch(login(res.token))
+      router.push("/")
+    }
+  };
+
   return (
     <>
       <Head>
@@ -17,7 +34,7 @@ const Register = () => {
         <div className="card md:w-[28rem] bg-base-100 shadow-xl mx-auto mt-8">
           <div className="card-body !px-12">
             <h2 className="text-2xl font-bold text-center mb-4">Login</h2>
-            <form>
+            <form onSubmit={handleSubmit(onSubmit)}>
               <div className="form-control">
                 <label className="label">
                   <span className="label-text !text-lg !font-semibold">
@@ -29,6 +46,8 @@ const Register = () => {
                     type="text"
                     placeholder="example@email.com"
                     className="input input-bordered !rounded-md w-full"
+                    required
+                    {...register("email")}
                   />
                 </label>
               </div>
@@ -43,17 +62,21 @@ const Register = () => {
                     type="password"
                     placeholder="Password"
                     className="input input-bordered !rounded-md w-full"
+                    required
+                    {...register("password")}
                   />
                 </label>
               </div>
               <button className="btn btn-primary rounded-lg mx-auto block mt-8">
-                CREATE ACCOUNT
+                LOGIN
               </button>
             </form>
             <div className="text-center mt-4">
               Belum punya akun?{" "}
               <Link href="/register">
-                <span className="text-primary cursor-pointer hover:text-primary-focus">Daftar</span>
+                <span className="text-primary cursor-pointer hover:text-primary-focus">
+                  Daftar
+                </span>
               </Link>
             </div>
           </div>

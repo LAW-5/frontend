@@ -1,8 +1,24 @@
+import axios from "axios";
 import Head from "next/head";
 import Link from "next/link";
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+import { useForm } from "react-hook-form";
 import AuthTitle from "../components/AuthTitle";
+import { registerUser } from "../models/auth";
 
 const Register = () => {
+  const { handleSubmit, register } = useForm();
+  const router = useRouter()
+  const [loading, setLoading] = useState(false)
+
+  const onSubmit = async (data) => {
+    setLoading(true)
+    const res = await registerUser(data);
+    setLoading(false)
+    router.push('/login');
+  };
+
   return (
     <>
       <Head>
@@ -17,7 +33,7 @@ const Register = () => {
         <div className="card md:w-[28rem] bg-base-100 shadow-xl mx-auto mt-8">
           <div className="card-body !px-12">
             <h2 className="text-2xl font-bold text-center mb-4">Register</h2>
-            <form>
+            <form onSubmit={handleSubmit(onSubmit)}>
               <div className="form-control">
                 <label className="label">
                   <span className="label-text !text-lg !font-semibold">
@@ -26,9 +42,11 @@ const Register = () => {
                 </label>
                 <label className="input-group">
                   <input
-                    type="text"
+                    type="email"
                     placeholder="example@email.com"
                     className="input input-bordered !rounded-md w-full"
+                    required
+                    {...register("email")}
                   />
                 </label>
               </div>
@@ -43,6 +61,8 @@ const Register = () => {
                     type="text"
                     placeholder="John Doe"
                     className="input input-bordered !rounded-md w-full"
+                    required
+                    {...register("fullName")}
                   />
                 </label>
               </div>
@@ -56,7 +76,9 @@ const Register = () => {
                   <input
                     type="password"
                     placeholder="Password"
+                    required
                     className="input input-bordered !rounded-md w-full"
+                    {...register("password")}
                   />
                 </label>
               </div>
@@ -67,13 +89,17 @@ const Register = () => {
             <div className="text-center mt-4">
               Sudah punya akun?{" "}
               <Link href="/login">
-                <span className="text-primary cursor-pointer hover:text-primary-focus">Masuk</span>
+                <span className="text-primary cursor-pointer hover:text-primary-focus">
+                  Masuk
+                </span>
               </Link>
             </div>
             <div className="text-center">
               Punya usaha?{" "}
               <Link href="/register-merchant">
-                <span className="text-primary cursor-pointer hover:text-primary-focus">Daftarkan toko Anda!</span>
+                <span className="text-primary cursor-pointer hover:text-primary-focus">
+                  Daftarkan toko Anda!
+                </span>
               </Link>
             </div>
           </div>

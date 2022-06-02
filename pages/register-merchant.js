@@ -1,8 +1,21 @@
 import Head from "next/head";
 import Link from "next/link";
+import { useRouter } from 'next/router';
+import { useForm } from 'react-hook-form';
 import AuthTitle from "../components/AuthTitle";
+import { registerMerchant } from '../models/auth';
 
 const Register = () => {
+
+  const { handleSubmit, register } = useForm();
+  const router = useRouter()
+
+  const onSubmit = async (data) => {
+    const res = await registerMerchant(data);
+    console.log(res);
+    router.push('/login');
+  };
+
   return (
     <>
       <Head>
@@ -18,7 +31,7 @@ const Register = () => {
           <div className="card-body !px-12">
             <h2 className="text-2xl font-bold text-center">Register</h2>
             <h4 className="text-center mb-4">Merchant</h4>
-            <form>
+            <form onSubmit={handleSubmit(onSubmit)}>
               <div className="form-control">
                 <label className="label">
                   <span className="label-text !text-lg !font-semibold">
@@ -29,7 +42,9 @@ const Register = () => {
                   <input
                     type="text"
                     placeholder="example@email.com"
+                    required
                     className="input input-bordered !rounded-md w-full"
+                    {...register("email")}
                   />
                 </label>
               </div>
@@ -44,6 +59,8 @@ const Register = () => {
                     type="text"
                     placeholder="John Doe"
                     className="input input-bordered !rounded-md w-full"
+                    required
+                    {...register("merchantName")}
                   />
                 </label>
               </div>
@@ -58,22 +75,10 @@ const Register = () => {
                     type="password"
                     placeholder="Password"
                     className="input input-bordered !rounded-md w-full"
+                    required
+                    {...register("password")}
                   />
                 </label>
-              </div>
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text !text-lg !font-semibold">
-                    Merchant Logo
-                  </span>
-                </label>
-                <label
-                  className="btn btn-secondary rounded-lg w-36"
-                  htmlFor="merchant-picture"
-                >
-                  UPLOAD
-                </label>
-                <input type="file" hidden id="merchant-picture" />
               </div>
               <button className="btn btn-primary rounded-lg mx-auto block mt-8">
                 CREATE ACCOUNT
