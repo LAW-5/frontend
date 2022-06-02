@@ -1,8 +1,12 @@
 import { MenuIcon } from "@heroicons/react/outline";
 import Image from "next/image";
 import Link from "next/link";
+import { useSelector } from 'react-redux';
+import { selectIsLogin } from '../redux/features/auth';
 
 const NavbarMerchant = () => {
+  const isLogin = useSelector(selectIsLogin);
+
   return (
     <div className="navbar bg-primary px-8">
       <div className="navbar-start">

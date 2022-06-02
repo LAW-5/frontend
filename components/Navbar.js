@@ -1,8 +1,12 @@
 import { BellIcon, MenuIcon, SearchIcon } from "@heroicons/react/outline";
 import Image from "next/image";
 import Link from "next/link";
+import { useSelector } from "react-redux";
+import { selectIsLogin } from "../redux/features/auth";
 
 const Navbar = () => {
+  const isLogin = useSelector(selectIsLogin);
+
   return (
     <div className="navbar bg-primary px-8">
       <div className="navbar-start">
@@ -41,7 +45,7 @@ const Navbar = () => {
               <Link href="/user-dashboard/e-wallet">Dashboard</Link>
             </li>
             <li>
-              <Link href="/">Logout</Link>
+              {isLogin ? <Link href="/">Logout</Link> : <Link href="/login">Login</Link>}
             </li>
           </ul>
         </div>

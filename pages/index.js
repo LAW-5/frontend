@@ -1,13 +1,18 @@
 import Head from "next/head";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import Banner from "../components/Banner";
 import Navbar from "../components/Navbar";
 import ProductList from "../components/ProductList";
 import { getAllProducts } from "../models/product";
+import ls from "local-storage";
+import { login } from "../redux/features/auth";
 
 export default function Home() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     getAllProducts().then((data) => {
@@ -15,6 +20,13 @@ export default function Home() {
       setLoading(false);
     });
   }, []);
+
+  useEffect(() => {
+    const token = ls("token");
+    if (token) {
+      dispatch(login(token));
+    }
+  }, [dispatch]);
 
   return (
     <>
