@@ -3,9 +3,28 @@ import Banner from "../../components/Banner";
 import MerchantDashboardDrawer from "../../components/MerchantDashboardDrawer";
 import NavbarMerchant from "../../components/NavbarMerchant";
 import PromoMerchantCard from "../../components/PromoMerchantCard";
+import { createPromo, getAllPromo } from '../../models/promo';
+import { useForm } from 'react-hook-form';
+import { useEffect, useState } from "react";
 
 const Promo = () => {
-  return (
+  const { handleSubmit, register } = useForm();
+  const [ promo, setPromo ] = useState();
+  const [ isLoaded, setIsLoaded ] = useState(false); 
+
+  const onSubmit = async (data) => {
+    const res = await createPromo(data);
+    console.log(res);
+  };  
+
+  useEffect(() => {
+    getAllPromo().then((res) => {
+      setPromo(res.data);
+      console.log(res);
+    });
+  }, []);
+
+  return ( promo &&
     <>
       <Head>
         <title>Merchant Dashboard | EXIT COMPUTER MANGO TWO</title>
@@ -24,7 +43,7 @@ const Promo = () => {
               <label className="modal-box relative" htmlFor="">
                 <h3 className="text-3xl font-bold text-center pt-4">Add Promo</h3>
                 
-                <form className="p-4">
+                <form className="p-4" onSubmit={handleSubmit(onSubmit)}>
                 <div className="form-control">
                   <label className="label">
                     <span className="label-text !text-lg !font-semibold">
@@ -36,6 +55,8 @@ const Promo = () => {
                       type="text"
                       placeholder="Masukkan kode promo"
                       className="input input-bordered !rounded-md w-full"
+                      required
+                      {...register("code")}
                     />
                   </label>
                 </div>
@@ -47,9 +68,11 @@ const Promo = () => {
                   </label>
                   <label className="input-group">
                     <input
-                      type="text"
+                      type="number"
                       placeholder="Masukkan persentase diskon"
                       className="input input-bordered !rounded-md w-full"
+                      required
+                      {...register("percentage")}
                     />
                   </label>
                 </div>
@@ -61,9 +84,11 @@ const Promo = () => {
                   </label>
                   <label className="input-group">
                     <input
-                      type="text"
+                      type="number"
                       placeholder="Masukkan potongan maksimal"
                       className="input input-bordered !rounded-md w-full"
+                      required
+                      {...register("maxCut")}
                     />
                   </label>
                 </div>
@@ -78,6 +103,8 @@ const Promo = () => {
                       type="text"
                       placeholder="Masukkan batas pemakaian"
                       className="input input-bordered !rounded-md w-full"
+                      required
+                      {...register("maxUse")}
                     />
                   </label>
                 </div>
@@ -88,11 +115,20 @@ const Promo = () => {
               </label>
             </label>
           </div>
-          <PromoMerchantCard />
-          <PromoMerchantCard />
-          <PromoMerchantCard />
-          <PromoMerchantCard />
-          <PromoMerchantCard />
+
+          {promo.map((p) => {
+            return (
+              <PromoMerchantCard 
+                key={p.id} 
+                id={p.id}
+                code={p.code} 
+                percentage={p.percentage} 
+                maxUse={p.maxUse} 
+                maxCut={p.maxCut} 
+                totalUse={p.totalUse} 
+              />
+            )
+          })}
         </main>
       </div>
       <MerchantDashboardDrawer />

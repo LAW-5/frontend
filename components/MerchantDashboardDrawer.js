@@ -1,6 +1,18 @@
 import Link from "next/link";
+import { useRouter } from 'next/router';
+import { useDispatch } from 'react-redux';
+import { logout } from '../redux/features/auth';
 
-const MerchantDashboardDrawer = () => (
+const MerchantDashboardDrawer = () => {
+  const dispatch = useDispatch();
+  const router = useRouter();
+
+  const handleLogout = () => {
+    dispatch(logout());
+    router.push("/login");
+  };
+
+  return (
   <div className="drawer drawer-end">
     <input
       id="merchant-dashboard-drawer"
@@ -22,9 +34,12 @@ const MerchantDashboardDrawer = () => (
         <li>
           <Link href="/merchant-dashboard/notification">Notification</Link>
         </li>
+        <li>
+          <button onClick={handleLogout}>Logout</button>
+        </li>
       </ul>
     </div>
   </div>
-);
+)};
 
 export default MerchantDashboardDrawer;
