@@ -15,8 +15,8 @@ export default function Home() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    getAllProducts().then((data) => {
-      setProducts(data);
+    getAllProducts().then((res) => {
+      setProducts(res.data);
       setLoading(false);
     });
   }, []);

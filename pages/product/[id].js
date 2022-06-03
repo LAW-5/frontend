@@ -1,42 +1,64 @@
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 import { useState } from "react";
 import Navbar from "../../components/Navbar";
 import PromoCard from "../../components/PromoCard";
 import QuantityInput from "../../components/QuantityInput";
+import { getProductDetail } from "../../models/product";
+import { getAllPromo } from "../../models/promo";
 import { formatIndonesianCurrency } from "../../utils/string";
+import _ from "lodash";
 
 const ProductDetail = () => {
   const [quantity, setQuantity] = useState(0);
+  const [product, setProduct] = useState({});
+  const [promo, setPromo] = useState([]);
+
+  const router = useRouter();
+  const { id } = router.query;
+
+  useEffect(() => {
+    getProductDetail(id).then((data) => {
+      setProduct(data);
+      console.log(data);
+    });
+
+    getAllPromo().then((res) => {
+      setPromo(res.data);
+      console.log(res.data);
+    });
+  }, [id]);
+
   return (
     <>
       <Head>
-        <title>Product Name | EXIT COMPUTER MANGO TWO</title>
+        <title>{product?.name} | EXIT COMPUTER MANGO TWO</title>
       </Head>
       <Navbar />
       <main className="mx-auto max-w-6xl pt-16 flex">
         <div className="w-3/12 px-4">
-          <Image
-            src="/images/RTX-3090.jpeg"
+          <img
+            src={product?.imageUrl}
             width={240}
             height={240}
-            alt="Product Name"
+            alt={product?.name}
           />
         </div>
         <div className="w-6/12 px-4">
           <h1 className="text-3xl leading-12 font-semibold line-clamp-2">
-            Geforce RTX 3090 Super Ready for Bitcoin Mining Gaming F1 VR Ready
-            With Color Stripe
+            {product?.name}
           </h1>
           <h4 className="text-3xl leading-12 font-bold text-primary my-8">
-            {formatIndonesianCurrency(15999999)}
+            {formatIndonesianCurrency(product?.price)}
           </h4>
-          <div className="flex items-center gap-4">
+          {/* <div className="flex items-center gap-4">
             <div className="avatar">
               <div className="w-10 rounded-full">
                 <Image
-                  src="/images/merchant-logo.jpeg"
+                  src="/images/merchant-logo.png"
                   width={40}
                   height={40}
                   alt="Merchant name"
@@ -45,15 +67,9 @@ const ProductDetail = () => {
               </div>
             </div>
             <h5 className="font-semibold">Toko Abadi Jaya</h5>
-          </div>
+          </div> */}
           <p className="mt-8">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-            culpa qui officia deserunt mollit anim id est laborum
+            {product?.description}
           </p>
           <div className="flex items-center mt-8">
             <span className="mr-4">Quantity</span>
@@ -76,9 +92,13 @@ const ProductDetail = () => {
         </div>
         <div className="w-3/12 px-4">
           <h5 className="font-bold text-md">Available Promo</h5>
-          <PromoCard discount={75} maxDiscount={20000} code="ABCDE" />
-          <PromoCard discount={80} maxDiscount={10000} code="ABCDF" />
-          <PromoCard discount={20} maxDiscount={100000} code="ABCDG" />
+          {_.map(promo, (item) => (
+            <PromoCard
+              key={item.id}
+              code={item.code}
+              maxDiscount={item.maxCut}
+              discount={item.percentage}
+            />))}
         </div>
       </main>
     </>
