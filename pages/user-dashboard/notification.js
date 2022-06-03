@@ -5,6 +5,7 @@ import NotificationCard from "../../components/NotificationCard";
 import UserDashboardDrawer from "../../components/UserDashboardDrawer";
 import { getAllNotification } from "../../models/notification";
 import _ from "lodash";
+import { useEffect, useState } from 'react';
 
 const NotificationUser = () => {
   const [notifications, setNotifications] = useState([]);
