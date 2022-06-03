@@ -16,7 +16,10 @@ const ProductCard = ({
   onEdit,
   onDelete,
 }) => {
-  const ok = "ok";
+  const handleDelete = async () => {
+    await deleteProduct(id);
+  };
+
   return (
     <div className="p-4 w-[25%]">
       <div className="card w-full bg-base-100 shadow-xl cursor-pointer">
@@ -48,7 +51,9 @@ const ProductCard = ({
                     desc={desc}
                     stock={stock}
                   />
-                  <label className="btn btn-ghost" ><TrashIcon className="text-neutral w-6" /></label>
+                  <label className="btn btn-ghost" onClick={handleDelete} >
+                    <TrashIcon className="text-neutral w-6" />
+                  </label>
                 </div>
               </div>
             </>

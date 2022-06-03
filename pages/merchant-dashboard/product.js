@@ -5,15 +5,16 @@ import MerchantDashboardDrawer from "../../components/MerchantDashboardDrawer";
 import NavbarMerchant from "../../components/NavbarMerchant";
 import ProductList from "../../components/ProductList";
 import ProductModal from "../../components/ProductModal";
-import { getAllProducts } from '../../models/product';
+import { getAllMerchantProducts, getAllProducts } from '../../models/product';
 
 const Product = () => {
   const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    getAllProducts().then((data) => {
-      setProducts(data);
+    setLoading(true);
+    getAllMerchantProducts().then((res) => {
+      setProducts(res.data);
       setLoading(false);
     });
   }, []);
