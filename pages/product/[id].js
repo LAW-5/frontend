@@ -1,5 +1,4 @@
 import Head from "next/head";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -11,6 +10,7 @@ import { getProductDetail } from "../../models/product";
 import { getAllPromo } from "../../models/promo";
 import { formatIndonesianCurrency } from "../../utils/string";
 import _ from "lodash";
+import { addToCart } from "../../models/cart";
 
 const ProductDetail = () => {
   const [quantity, setQuantity] = useState(0);
@@ -32,6 +32,16 @@ const ProductDetail = () => {
     };
     fetchData();
   }, [id]);
+
+  const handleCart = () => {
+    const data = {};
+    data.merchantId = product.merhcantId;
+    data.productId = product.id;
+    data.quantity = quantity;
+    addToCart(data).then(() => {
+      router.push("/cart");
+    })
+  }
 
   return (
     <>
@@ -84,11 +94,9 @@ const ProductDetail = () => {
               />
             </div>
             <div className="flex mt-8 gap-8">
-              <Link href="/cart">
-                <button className="btn btn-secondary rounded-lg">
+                <button className="btn btn-secondary rounded-lg" onClick={handleCart}>
                   Add to Cart
                 </button>
-              </Link>
               <Link href="/order">
                 <button className="btn btn-primary rounded-lg">Checkout</button>
               </Link>

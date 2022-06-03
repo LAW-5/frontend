@@ -1,9 +1,41 @@
 import { TrashIcon } from '@heroicons/react/outline';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
+import { getProductDetail } from '../models/product';
 import { formatIndonesianCurrency } from '../utils/string';
 import QuantityInput from './QuantityInput';
 
-const CartTable = ({merchantName}) => {
+const CartTable = ({merchantName, cart}) => {
+
+  const [ product, setProduct ] = useState([]);
+  const [ productIds, setProductIds ] = useState([])
+  const [ quantity, setQuantity ] = useState([]);
+
+  useEffect(() => {
+    const temp = [];
+    const qtemp = [];
+    cart.map((c) => {
+      temp.push(c.productId);
+      qtemp.push(c.quantity);
+    });
+    setProductIds(temp);
+    setQuantity(qtemp);
+  }, [])
+
+  useEffect(() => {
+    const fetchProduct = async (productId) => {
+      const resProduct = await getProductDetail(productId);
+      setProduct(resProduct);
+    };
+
+    const ptemp = [];
+    productIds.map((p) => (
+      ptemp.push(fetchProduct(p))
+    ));
+
+    setProduct(ptemp);
+  }, [productIds, quantity]);
+
   return (
     <table className="table w-full border-2 rounded-lg mb-8">
       <thead>
