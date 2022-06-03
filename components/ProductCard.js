@@ -2,6 +2,8 @@
 
 import { PencilIcon, TrashIcon } from "@heroicons/react/outline";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { deleteProduct } from "../models/product";
 import { formatIndonesianCurrency } from "../utils/string";
 import ProductModal from "./ProductModal";
 
@@ -13,11 +15,14 @@ const ProductCard = ({
   desc,
   stock,
   isMerchant,
-  onEdit,
-  onDelete,
 }) => {
+
+  const router = useRouter();
+
   const handleDelete = async () => {
-    await deleteProduct(id);
+    await deleteProduct(id).then(() => {
+      router.reload();
+    })
   };
 
   return (
@@ -38,18 +43,20 @@ const ProductCard = ({
           {isMerchant && (
             <>
               <small>
-                Sisa stok: <span className="text-accent">120</span>
+                Sisa stok: <span className="text-accent">{stock}</span>
               </small>
               <div className="flex justify-end">
                 <div className="flex">
-                  <label htmlFor="edit-modal" className="btn btn-ghost" ><PencilIcon className="text-neutral w-6" /></label>
+                  <label htmlFor={`edit-modal-${id}`} className="btn btn-ghost" ><PencilIcon className="text-neutral w-6" /></label>
                   <ProductModal
                     isUpdate={true}
-                    modalId="edit-modal"
+                    id={id}
+                    modalId={`edit-modal-${id}`}
                     name={name}
                     price={price}
                     desc={desc}
                     stock={stock}
+                    imgUrl={imgUrl}
                   />
                   <label className="btn btn-ghost" onClick={handleDelete} >
                     <TrashIcon className="text-neutral w-6" />

@@ -6,21 +6,23 @@ import PromoMerchantCard from "../../components/PromoMerchantCard";
 import { createPromo, getAllPromo } from '../../models/promo';
 import { useForm } from 'react-hook-form';
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 const Promo = () => {
   const { handleSubmit, register } = useForm();
   const [ promo, setPromo ] = useState();
-  const [ isLoaded, setIsLoaded ] = useState(false); 
+
+  const router = useRouter();
 
   const onSubmit = async (data) => {
-    const res = await createPromo(data);
-    console.log(res);
+    await createPromo(data).then(() => {
+      router.reload();
+    });
   };  
 
   useEffect(() => {
     getAllPromo().then((res) => {
       setPromo(res.data);
-      console.log(res);
     });
   }, []);
 

@@ -27,6 +27,16 @@ export const getAllMerchantProducts = async () => {
 }
 
 export const deleteProduct = async (id) => {
-  const response = await apiClient.delete(`${url}/${id}`);
+  const response = await apiClient.delete(`${url}/${id}`, {data: { id }});
+  return response.data;
+};
+
+export const addProduct = async (data) => {
+  const response = await apiClient.post(url, data);
+  return response.data;
+};
+
+export const editProduct = async (id, data) => {
+  const response = await apiClient.put(`${url}/${id}`, data);
   return response.data;
 };

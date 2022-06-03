@@ -1,15 +1,33 @@
+import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
+import { addProduct, editProduct } from "../models/product";
 
 const ProductModal = ({
   isUpdate,
   modalId,
+  id,
   name,
   price,
   desc,
   stock,
-  imageUrl,
+  imgUrl,
 }) => {
   const { register, handleSubmit } = useForm();
+
+  const router = useRouter();
+
+  const onSubmit = async (data) => {
+    await addProduct(data).then(() => {
+      router.reload();
+    })
+  };
+
+  const onUpdate = async (data) => {
+    data.id = id;
+    await editProduct(data.id, data).then(() => {
+      router.reload();
+    })
+  };
 
   return (
     <>
@@ -20,7 +38,7 @@ const ProductModal = ({
             {isUpdate ? "Edit" : "Add"} Product
           </h3>
 
-          <form className="p-4">
+          <form className="p-4" onSubmit={isUpdate ? handleSubmit(onUpdate) : handleSubmit(onSubmit)}>
             <div className="form-control">
               <label className="label">
                 <span className="label-text !text-lg !font-semibold">Name</span>
@@ -30,6 +48,7 @@ const ProductModal = ({
                   type="text"
                   placeholder="Product name"
                   className="input input-bordered !rounded-md w-full"
+                  defaultValue={name}
                   required
                   {...register("name")}
                 />
@@ -46,6 +65,7 @@ const ProductModal = ({
                   type="text"
                   placeholder="999999"
                   className="input input-bordered !rounded-md w-full"
+                  defaultValue={price}
                   required
                   {...register("price")}
                 />
@@ -62,6 +82,7 @@ const ProductModal = ({
                   type="text"
                   placeholder="99999"
                   className="input input-bordered !rounded-md w-full"
+                  defaultValue={stock}
                   required
                   {...register("stock")}
                 />
@@ -76,7 +97,9 @@ const ProductModal = ({
               <label className="input-group">
                 <input
                   type="text"
+                  placeholder="Description"
                   className="input input-bordered !rounded-md w-full"
+                  defaultValue={desc}
                   required
                   {...register("description")}
                 />
@@ -92,13 +115,14 @@ const ProductModal = ({
                 <input
                   type="text"
                   placeholder="Image URL"
-                  value={imageUrl}
+                  defaultValue={imgUrl}
                   className="input input-bordered !rounded-md w-full"
+                  {...register("imageUrl")}
                 />
               </label>
             </div>
             <button className="btn btn-primary rounded-lg mx-auto block mt-8">
-              {isUpdate ? "Update" : "Create"} Product
+              {isUpdate ? "Update" : "Add"} Product
             </button>
           </form>
         </label>
