@@ -2,10 +2,14 @@ import { BellIcon, MenuIcon, SearchIcon } from "@heroicons/react/outline";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { logout, selectIsLogin } from "../redux/features/auth";
 
 const Navbar = () => {
+
+  const [searchQuery, setSearchQuery] = useState("");
+
   const isLogin = useSelector(selectIsLogin);
 
   const dispatch = useDispatch()
@@ -14,6 +18,10 @@ const Navbar = () => {
   const handleLogout = () => {
     dispatch(logout())
     router.push("/login")
+  }
+
+  const handleSearch = () => {
+    router.push(`/?search=${searchQuery}`)
   }
 
   return (
@@ -30,8 +38,11 @@ const Navbar = () => {
           type="text"
           placeholder="Cari barang..."
           className="input input-bordered w-96"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && handleSearch()}
         />
-        <button className="btn btn-square btn-ghost absolute right-0">
+        <button className="btn btn-square btn-ghost absolute right-0" onClick={handleSearch}>
           <SearchIcon className="text-neutral w-6" />
         </button>
       </div>

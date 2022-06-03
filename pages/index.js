@@ -4,9 +4,10 @@ import { useDispatch } from "react-redux";
 import Banner from "../components/Banner";
 import Navbar from "../components/Navbar";
 import ProductList from "../components/ProductList";
-import { getAllProducts } from "../models/product";
+import { getAllProducts, searchProduct } from "../models/product";
 import ls from "local-storage";
 import { login } from "../redux/features/auth";
+import { useRouter } from 'next/router';
 
 export default function Home() {
   const [products, setProducts] = useState([]);
@@ -14,12 +15,24 @@ export default function Home() {
 
   const dispatch = useDispatch();
 
+  const router = useRouter();
+  const name = router.query.search
+
   useEffect(() => {
-    getAllProducts().then((res) => {
-      setProducts(res.data);
-      setLoading(false);
-    });
-  }, []);
+    setLoading(true);
+    if (name) {
+      searchProduct(name).then((res) => {
+        setProducts(res.data);
+        console.log(res)
+        setLoading(false);
+      });
+    } else {
+      getAllProducts().then((res) => {
+        setProducts(res.data);
+        setLoading(false);
+      });
+    }
+  }, [name]);
 
   useEffect(() => {
     const token = ls("token");

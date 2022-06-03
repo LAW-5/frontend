@@ -1,4 +1,4 @@
-import apiClient from './apiClient';
+import apiClient from "./apiClient";
 
 const url = "/product";
 
@@ -12,4 +12,10 @@ export const getProductDetail = async (id) => {
   const response = await apiClient.get(`${url}/${id}`);
   console.log(response.data);
   return response.data;
-}
+};
+
+export const searchProduct = async (name) => {
+  const response = await apiClient.post(`${url}/search`, { name });
+  console.log(response.data);
+  return response.data;
+};
