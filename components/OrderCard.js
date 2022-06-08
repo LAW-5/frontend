@@ -1,32 +1,45 @@
+import { useEffect, useState } from "react";
+import { getProductDetail } from "../models/product";
 import { formatIndonesianCurrency } from "../utils/string";
 
 const USER_FINISHED_STATUSES = ["Selesai", "Dibatalkan"];
 const MERCHANT_FINISHED_STATUSES = ["Dikirim", "Selesai", "Dibatalkan"];
 
-const OrderCard = ({ status, isMerchant }) => {
-  return (
+const OrderCard = ({ order, isMerchant }) => {
+
+  const [product, setProduct] = useState();
+
+  useEffect(() => {
+    const fetchProduct = async (productId) => {
+      const resProduct = await getProductDetail(productId);
+      setProduct(resProduct);
+    };
+
+    fetchProduct(order.productId);
+  }, [order]);
+
+  return ( product &&
     <div className="card w-full bg-base-100 shadow-xl mb-4">
       <div className="card-body">
-        <p className="font-bold text-primary">{status}</p>
-        <small>Order ID ABC1234567</small>
-        <small>Ordered 10 April 2022</small>
+        <p className="font-bold text-primary">{order.orderStatus}</p>
+        <small>Order ID {product.id}</small>
         <p className="text-lg font-semibold">
-          MSI GEFORCE RTX 3090 VENTUS 3X 24G OC
+          {product.name}
         </p>
         <p className="text-md font-bold">
-          {formatIndonesianCurrency(15999999)}
+          {formatIndonesianCurrency(product.price * order.quantity)}
         </p>
         <div className="bg-neutral-content rounded-md p-5 mt-2 leading-loose">
           <p className="font-bold">Alamat Pengiriman:</p>
-          <p>Bambang Setiabudi</p>
-          <p>Jl. Mawar No.7 RT02 RW01, Depok</p>
+          <p>{order.name}</p>
+          <p>{order.address}</p>
         </div>
-        {!isMerchant && !USER_FINISHED_STATUSES.includes(status) && (
+        {!isMerchant && !USER_FINISHED_STATUSES.includes(order.orderStatus) && (
           <button className="btn btn-primary rounded-lg w-fit mt-2">
             SELESAI
           </button>
         )}
-        {isMerchant && !MERCHANT_FINISHED_STATUSES.includes(status) && (
+        {isMerchant && !MERCHANT_FINISHED_STATUSES.includes(order.orderStatus) && (
           <div className="flex gap-4">
             <button className="btn btn-primary rounded-lg w-fit mt-2">
               PRODUK SIAP DIKIRIM

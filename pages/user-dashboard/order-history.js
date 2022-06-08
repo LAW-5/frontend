@@ -1,11 +1,22 @@
 import Head from "next/head";
+import { useEffect, useState } from "react";
 import Banner from "../../components/Banner";
 import Navbar from "../../components/Navbar";
 import OrderCard from '../../components/OrderCard';
 import UserDashboardDrawer from "../../components/UserDashboardDrawer";
+import { getOrderUser } from "../../models/order";
 
 const OrderHistoryUser = () => {
-  return (
+
+  const [order, setOrder] = useState();
+
+  useEffect(() => {
+    getOrderUser().then((res) => {
+      setOrder(res.data);
+    });
+  }, []);
+
+  return ( order &&
     <>
       <Head>
         <title>User Dashboard | EXIT COMPUTER MANGO TWO</title>
@@ -24,11 +35,9 @@ const OrderHistoryUser = () => {
             </div>
           </Banner>
           <h2 className="my-8 text-2xl font-bold text-center">Order History</h2>
-          <OrderCard status="Menunggu Konfirmasi" />
-          <OrderCard status="Dikemas" />
-          <OrderCard status="Dikirim" />
-          <OrderCard status="Selesai" />
-          <OrderCard status="Dibatalkan" />
+          {order.map((ord) => (
+            <OrderCard order={ord} />
+          ))}
         </main>
       </div>
       <UserDashboardDrawer />
