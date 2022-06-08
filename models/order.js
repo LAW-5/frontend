@@ -2,8 +2,6 @@ import apiClient from './apiClient';
 
 const url = "/order";
 
-const ORDER_STATUS = ["Menunggu Konfirmasi", "Dikirim", "Selesai"]
-
 export const getOrderUser = async () => {
   const response = await apiClient.get(`${url}/user`);
   return response.data;
@@ -14,10 +12,10 @@ export const getOrderMerchant = async () => {
   return response.data;
 };
 
-// export const nextOrderStatus = async (id, currentStatus) => {
-//   const data = {};
-//   data.id = id;
-//   data.orderStatus = 
-//   const response = await apiClient.put(url, data);
-//   return response.data;
-// };
+export const editOrderStatus = async (id, status) => {
+  const data = {};
+  data.id = id;
+  data.orderStatus = status;
+  const response = await apiClient.put(url, data);
+  return response.data;
+};

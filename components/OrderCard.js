@@ -1,4 +1,6 @@
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { editOrderStatus } from "../models/order";
 import { getProductDetail } from "../models/product";
 import { formatIndonesianCurrency } from "../utils/string";
 
@@ -7,6 +9,7 @@ const MERCHANT_FINISHED_STATUSES = ["Dikirim", "Selesai", "Dibatalkan"];
 
 const OrderCard = ({ order, isMerchant }) => {
 
+  const router = useRouter();
   const [product, setProduct] = useState();
 
   useEffect(() => {
@@ -17,6 +20,11 @@ const OrderCard = ({ order, isMerchant }) => {
 
     fetchProduct(order.productId);
   }, [order]);
+
+  const handleStatus = (status) => {
+    editOrderStatus(order.id, status);
+    router.reload();
+  }
 
   return ( product &&
     <div className="card w-full bg-base-100 shadow-xl mb-4">
@@ -35,16 +43,25 @@ const OrderCard = ({ order, isMerchant }) => {
           <p>{order.address}</p>
         </div>
         {!isMerchant && !USER_FINISHED_STATUSES.includes(order.orderStatus) && (
-          <button className="btn btn-primary rounded-lg w-fit mt-2">
+          <button 
+            className="btn btn-primary rounded-lg w-fit mt-2"
+            onClick={() => handleStatus("Selesai")}
+          >
             SELESAI
           </button>
         )}
         {isMerchant && !MERCHANT_FINISHED_STATUSES.includes(order.orderStatus) && (
           <div className="flex gap-4">
-            <button className="btn btn-primary rounded-lg w-fit mt-2">
+            <button 
+              className="btn btn-primary rounded-lg w-fit mt-2"
+              onClick={() => handleStatus("Dikirim")}
+            >
               PRODUK SIAP DIKIRIM
             </button>
-            <button className="btn btn-secondary rounded-lg w-fit mt-2">
+            <button 
+              className="btn btn-secondary rounded-lg w-fit mt-2"
+              onClick={() => handleStatus("Dibatalkan")}
+            >
               BATALKAN PESANAN
             </button>
           </div>
