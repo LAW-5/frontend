@@ -70,20 +70,6 @@ const ProductDetail = () => {
             <h4 className="text-3xl leading-12 font-bold text-primary my-8">
               {formatIndonesianCurrency(product?.price)}
             </h4>
-            {/* <div className="flex items-center gap-4">
-            <div className="avatar">
-              <div className="w-10 rounded-full">
-                <Image
-                  src="/images/merchant-logo.png"
-                  width={40}
-                  height={40}
-                  alt="Merchant name"
-                  layout="responsive"
-                />
-              </div>
-            </div>
-            <h5 className="font-semibold">Toko Abadi Jaya</h5>
-          </div> */}
             <p className="mt-8">{product?.description}</p>
             <div className="flex items-center mt-8">
               <span className="mr-4">Quantity</span>

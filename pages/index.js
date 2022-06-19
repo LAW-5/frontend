@@ -36,8 +36,12 @@ export default function Home() {
 
   useEffect(() => {
     const token = ls("token");
+    const role = ls("role");
     if (token) {
-      dispatch(login(token));
+      dispatch(login());
+      if (role === "merchant") {
+        router.push("/merchant-dashboard/product");
+      }
     }
   }, [dispatch]);
 

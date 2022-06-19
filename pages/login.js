@@ -1,22 +1,26 @@
 import Head from "next/head";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import AuthTitle from "../components/AuthTitle";
 import { login as loginUser } from "../models/auth";
-import { login } from '../redux/features/auth';
+import { login, setRole } from '../redux/features/auth';
+import ls from "local-storage";
 
 const Register = () => {
   const { handleSubmit, register } = useForm();
-  const router = useRouter();
   const dispatch = useDispatch();
 
   const onSubmit = async (data) => {
     const res = await loginUser(data);
     if (res.status === 200) {
-      dispatch(login(res.token))
-      router.push("/")
+      ls("token", res.token);
+      ls("role", res.role);
+
+      dispatch(login())
+      window.location.href = "/"
+    } else {
+      alert("Invalid email or password")
     }
   };
 
