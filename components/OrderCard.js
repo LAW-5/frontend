@@ -10,32 +10,42 @@ const MERCHANT_FINISHED_STATUSES = ["Dikirim", "Selesai", "Dibatalkan"];
 const OrderCard = ({ order, isMerchant }) => {
 
   const router = useRouter();
-  const [product, setProduct] = useState();
-
+  const [product, setProduct] = useState([]);
+  const [isLoading, setIsloading] = useState(true);
+  
   useEffect(() => {
+    const products = [];
     const fetchProduct = async (productId) => {
       const resProduct = await getProductDetail(productId);
-      setProduct(resProduct);
+      products.push(resProduct);
+      if (products.length == order.productId.length) {
+        setProduct(products);
+        setIsloading(false);
+      }
     };
 
-    fetchProduct(order.productId);
+    
+    order.productId.map((id) => {
+      fetchProduct(id);
+    });
   }, [order]);
 
   const handleStatus = (status) => {
-    editOrderStatus(order.id, status);
-    router.reload();
+    editOrderStatus(order.id, status).then(() => router.reload());
   }
 
-  return ( product &&
+  return ( !isLoading &&
     <div className="card w-full bg-base-100 shadow-xl mb-4">
       <div className="card-body">
         <p className="font-bold text-primary">{order.orderStatus}</p>
-        <small>Order ID {product.id}</small>
-        <p className="text-lg font-semibold">
-          {product.name}
-        </p>
+        <small onClick={() => console.log(product)}>Order ID {order.id}</small>
+        {product.map((prod, i) => { return (
+          <p className="text-lg font-semibold" key={prod.id}>
+            {prod.name} ({order.quantity[i]})
+          </p>
+        )})}
         <p className="text-md font-bold">
-          {formatIndonesianCurrency(product.price * order.quantity)}
+          {formatIndonesianCurrency(order.totalPrice)}
         </p>
         <div className="bg-neutral-content rounded-md p-5 mt-2 leading-loose">
           <p className="font-bold">Alamat Pengiriman:</p>

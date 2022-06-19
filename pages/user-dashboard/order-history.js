@@ -36,7 +36,7 @@ const OrderHistoryUser = () => {
           </Banner>
           <h2 className="my-8 text-2xl font-bold text-center">Order History</h2>
           {order.map((ord) => (
-            <OrderCard order={ord} />
+            <OrderCard order={ord} key={ord.id}/>
           ))}
         </main>
       </div>
