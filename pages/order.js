@@ -1,10 +1,67 @@
 import Head from "next/head";
+import { useSelector } from "react-redux";
 import Banner from "../components/Banner";
 import Navbar from "../components/Navbar";
 import OrderTable from "../components/OrderTable";
-import { formatIndonesianCurrency } from '../utils/string';
+import order, { selectOrderData } from "../redux/features/order";
+import { formatIndonesianCurrency } from "../utils/string";
+import { useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
+import { getAllPromo, usePromo } from "../models/promo";
+import { placeOrder } from "../models/order";
 
 export default function Home() {
+  const orderData = useSelector(selectOrderData);
+  const { register, handleSubmit } = useForm();
+  const [promoCode, setPromoCode] = useState("");
+  const [promoList, setPromoList] = useState([]);
+  const [promo, setPromo] = useState(0);
+  const [totalPesanan, setTotalPesanan] = useState(0);
+
+  useEffect(() => {
+    const merchantId = orderData[0].merhcantId;
+    setTotalPesanan(
+      orderData
+        .map((p) => p.price * p.quantity)
+        .reduce((acc, curr) => acc + curr)
+    );
+    getAllPromo(merchantId).then((res) => {
+      setPromoList(res.data);
+    });
+  }, [orderData]);
+
+  const handleApplyPromo = () => {
+    if (promoCode !== "") {
+      const promoFound = promoList.find((p) => p.code === promoCode);
+      if (!promoFound) {
+        alert("Promo code tidak ditemukan");
+      } else {
+        const promoValue = Math.min(
+          promoFound.maxCut,
+          Math.floor((promoFound.percentage / 100) * totalPesanan)
+        );
+        setPromo(promoValue);
+        usePromo(promoFound.id);
+      }
+    }
+  };
+
+  const onSubmit = (data) => {
+    const body = {
+      merchantId: orderData[0].merhcantId,
+      productId: orderData.map((p) => p.id),
+      quantity: orderData.map((p) => p.quantity),
+      totalPrice: totalPesanan - promo,
+      name: data.name,
+      address: data.address,
+    };
+
+    placeOrder(body).then((res) => {
+      alert("Pesanan berhasil dikirim");
+      window.location.href = "/user-dashboard/order-history";
+    });
+  };
+
   return (
     <>
       <Head>
@@ -13,8 +70,11 @@ export default function Home() {
       <Navbar />
       <main className="mx-auto max-w-6xl pt-4 pb-20">
         <Banner title="Checkout" />
-        <div className="overflow-x-auto w-full mt-8">
-          <OrderTable merchantName="Toko Jaya Abadi" />
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="overflow-x-auto w-full mt-8 px-2"
+        >
+          <OrderTable orderData={orderData} />
           <h3 className="font-semibold text-xl mt-8">Isi Alamat Pengiriman</h3>
           <div className="form-control mt-4">
             <label className="label !px-0">
@@ -27,6 +87,8 @@ export default function Home() {
                 type="text"
                 placeholder="John Doe"
                 className="input input-bordered !rounded-md w-full"
+                required
+                {...register("name")}
               />
             </label>
           </div>
@@ -37,7 +99,12 @@ export default function Home() {
               </span>
             </label>
             <label className="input-group">
-              <textarea className="textarea input w-full !h-32 !rounded-md input-bordered" placeholder="Alamat"></textarea>
+              <textarea
+                className="textarea input w-full !h-32 !rounded-md input-bordered"
+                placeholder="Alamat"
+                required
+                {...register("address")}
+              ></textarea>
             </label>
           </div>
           <h3 className="font-semibold text-xl mt-12">Gunakan Promo</h3>
@@ -51,8 +118,13 @@ export default function Home() {
               <input
                 type="text"
                 placeholder="xxxxx"
-                className="input input-bordered !rounded-md w-full"
+                className="input input-bordered !rounded-md w-full mr-4"
+                value={promoCode}
+                onChange={(e) => setPromoCode(e.target.value)}
               />
+              <button type="button" onClick={handleApplyPromo} className="btn">
+                Apply
+              </button>
             </label>
           </div>
           <div className="mt-20 border-b border-secondary"></div>
@@ -60,24 +132,27 @@ export default function Home() {
             <div className="w-96 leading-loose">
               <div className="flex justify-between">
                 <span>Total Pesanan:</span>
-                <span>{formatIndonesianCurrency(30000000)}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Ongkos Kirim:</span>
-                <span>{formatIndonesianCurrency(30000000)}</span>
+                <span>{formatIndonesianCurrency(totalPesanan)}</span>
               </div>
               <div className="flex justify-between">
                 <span>Total Promo Diskon:</span>
-                <span>-{formatIndonesianCurrency(30000000)}</span>
+                <span>-{formatIndonesianCurrency(promo)}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-xl">Total Pembayaran:</span>
-                <span className="text-primary text-xl font-bold">-{formatIndonesianCurrency(30000000)}</span>
+                <span className="text-primary text-xl font-bold">
+                  {formatIndonesianCurrency(totalPesanan - promo)}
+                </span>
               </div>
-              <button className="btn btn-primary rounded-lg mt-8 w-full">ORDER</button>
+              <button
+                type="submit"
+                className="btn btn-primary rounded-lg mt-8 w-full"
+              >
+                ORDER
+              </button>
             </div>
           </div>
-        </div>
+        </form>
       </main>
     </>
   );

@@ -2,8 +2,8 @@ import apiClient from './apiClient';
 
 const url = "/promo";
 
-export const getAllPromo = async () => {
-  const response = await apiClient.get(url);
+export const getAllPromo = async (merchantId) => {
+  const response = await apiClient.get(`${url}/${merchantId}`);
   return response.data;
 };
 
@@ -12,8 +12,8 @@ export const createPromo = async (data) => {
   return response.data;
 };
 
-export const usePromo = async (data) => {
-  const response = await apiClient.post(`${url}/use`, data);
+export const usePromo = async (id) => {
+  const response = await apiClient.post(`${url}/use`, { id });
   return response.data;
 };
 

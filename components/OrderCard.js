@@ -41,7 +41,7 @@ const OrderCard = ({ order, isMerchant }) => {
         <small onClick={() => console.log(product)}>Order ID {order.id}</small>
         {product.map((prod, i) => { return (
           <p className="text-lg font-semibold" key={prod.id}>
-            {prod.name} ({order.quantity[i]})
+            {prod.name} (Quantity: {order.quantity[i]})
           </p>
         )})}
         <p className="text-md font-bold">

@@ -25,7 +25,7 @@ const ProductDetail = () => {
     const fetchData = async () => {
       setLoading(true);
       const resProduct = await getProductDetail(id);
-      const resPromo = await getAllPromo();
+      const resPromo = await getAllPromo(resProduct.merhcantId);
       setProduct(resProduct);
       setPromo(resPromo.data);
       setLoading(false);

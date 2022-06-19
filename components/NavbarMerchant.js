@@ -1,11 +1,25 @@
 import { MenuIcon } from "@heroicons/react/outline";
 import Image from "next/image";
 import Link from "next/link";
-import { useSelector } from 'react-redux';
-import { selectIsLogin } from '../redux/features/auth';
+import { useDispatch, useSelector } from 'react-redux';
+import { login, selectIsLogin } from '../redux/features/auth';
+import ls from "local-storage";
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 const NavbarMerchant = () => {
   const isLogin = useSelector(selectIsLogin);
+
+  const dispatch = useDispatch();
+  const router = useRouter()
+
+  useEffect(() => {
+    const token = ls("token");
+    const role = ls("role");
+    if (token) {
+      dispatch(login());
+    }
+  }, [dispatch]);
 
   return (
     <div className="navbar bg-primary px-8">

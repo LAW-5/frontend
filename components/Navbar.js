@@ -2,9 +2,10 @@ import { BellIcon, MenuIcon, SearchIcon } from "@heroicons/react/outline";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { logout, selectIsLogin } from "../redux/features/auth";
+import { login, logout, selectIsLogin } from "../redux/features/auth";
+import ls from "local-storage";
 
 const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -22,6 +23,14 @@ const Navbar = () => {
   const handleSearch = () => {
     router.push(`/?search=${searchQuery}`);
   };
+
+  useEffect(() => {
+    const token = ls("token");
+    const role = ls("role");
+    if (token) {
+      dispatch(login());
+    }
+  }, [dispatch]);
 
   return (
     <div className="navbar bg-primary px-8">
