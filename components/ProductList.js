@@ -3,7 +3,7 @@ import ProductCard from "./ProductCard";
 const ProductList = ({ products, isMerchant }) => {
   return (
     <div className="flex flex-wrap mt-8 items-stretch">
-      {products.map((product) => (
+      {products?.map((product) => (
         <ProductCard
           key={product.id}
           id={product.id}
