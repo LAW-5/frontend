@@ -14,12 +14,15 @@ export const orderSlice = createSlice({
     },
     deleteOrderData: (state, action) => {
       state.data = state.data.filter((item) => item.id !== action.payload);
+    },
+    resetOrderData: (state) => {
+      state.data = [];
     }
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { addOrderData, deleteOrderData } = orderSlice.actions;
+export const { addOrderData, deleteOrderData, resetOrderData } = orderSlice.actions;
 
 export const selectOrderData = (state) => state.order.data;
 

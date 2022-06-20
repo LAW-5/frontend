@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { getAllPromo, usePromo } from "../models/promo";
 import { placeOrder } from "../models/order";
+import { decreaseBalance, getBalance } from "../models/payment";
 
 export default function Home() {
   const orderData = useSelector(selectOrderData);
@@ -17,6 +18,7 @@ export default function Home() {
   const [promoList, setPromoList] = useState([]);
   const [promo, setPromo] = useState(0);
   const [totalPesanan, setTotalPesanan] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const merchantId = orderData[0].merhcantId;
@@ -46,20 +48,38 @@ export default function Home() {
     }
   };
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
+
+    setLoading(true)
+
+    const orderPrice = totalPesanan - promo;
+
     const body = {
       merchantId: orderData[0].merhcantId,
       productId: orderData.map((p) => p.id),
       quantity: orderData.map((p) => p.quantity),
-      totalPrice: totalPesanan - promo,
+      totalPrice: orderPrice,
       name: data.name,
       address: data.address,
     };
 
-    placeOrder(body).then((res) => {
-      alert("Pesanan berhasil dikirim");
-      window.location.href = "/user-dashboard/order-history";
-    });
+    const resBalance = await getBalance();
+
+    if (resBalance.balance < orderPrice) {
+      alert(
+        "Saldo tidak mencukupi, saldo anda saat ini " +
+          formatIndonesianCurrency(resBalance.balance)
+      );
+      setLoading(false)
+    } else {
+      await decreaseBalance({ amount: orderPrice, id: resBalance.id });
+
+      await placeOrder(body).then((res) => {
+        alert("Pesanan berhasil dikirim");
+        setLoading(false)
+        window.location.href = "/user-dashboard/order-history";
+      });
+    }
   };
 
   return (
@@ -146,7 +166,7 @@ export default function Home() {
               </div>
               <button
                 type="submit"
-                className="btn btn-primary rounded-lg mt-8 w-full"
+                className={`btn btn-primary rounded-lg mt-8 w-full ${loading && "loading"}`}
               >
                 ORDER
               </button>

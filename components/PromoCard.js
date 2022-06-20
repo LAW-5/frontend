@@ -1,5 +1,6 @@
 import { ClipboardIcon } from "@heroicons/react/outline";
 import { formatIndonesianCurrency } from "../utils/string";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
 const PromoCard = ({ maxDiscount, discount, code }) => {
   return (
@@ -10,9 +11,11 @@ const PromoCard = ({ maxDiscount, discount, code }) => {
           <div className="text-md inline">
             Kode Promo <span className="font-bold">{code}</span>
           </div>
-          <button>
-            <ClipboardIcon className="text-neutral w-5 ml-2 " />
-          </button>
+          <CopyToClipboard text={code} onCopy={() => alert("Code Copied")}>
+            <button>
+              <ClipboardIcon className="text-neutral w-5 ml-2 " />
+            </button>
+          </CopyToClipboard>
         </div>
         <small>Max. potongan {formatIndonesianCurrency(maxDiscount)}</small>
       </div>

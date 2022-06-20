@@ -1,12 +1,12 @@
 import Head from "next/head";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Banner from "../components/Banner";
 import CartBottomBar from "../components/CartBottomBar";
 import CartTable from "../components/CartTable";
 import Navbar from "../components/Navbar";
 import { getAllCart } from "../models/cart";
-import { selectOrderData } from "../redux/features/order";
+import { resetOrderData, selectOrderData } from "../redux/features/order";
 
 const ListOfCartTable = ({ carts }) => {
   return Object.entries(carts).map(([k, v]) => (
@@ -19,11 +19,17 @@ export default function Cart() {
 
   const orderData = useSelector(selectOrderData);
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
     getAllCart().then((res) => {
       setCarts(res.data);
     });
   }, []);
+
+  useEffect(() => {
+    dispatch(resetOrderData());
+  }, [])
 
   return (
     <>
