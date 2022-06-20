@@ -43,7 +43,7 @@ export default function Home() {
         router.push("/merchant-dashboard/product");
       }
     }
-  }, [dispatch]);
+  }, [dispatch, router]);
 
   return (
     <>

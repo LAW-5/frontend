@@ -12,7 +12,7 @@ export const createPromo = async (data) => {
   return response.data;
 };
 
-export const usePromo = async (id) => {
+export const pakaiPromo = async (id) => {
   const response = await apiClient.post(`${url}/use`, { id });
   return response.data;
 };

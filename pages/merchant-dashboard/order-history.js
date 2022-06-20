@@ -26,8 +26,8 @@ const OrderHistoryMerchant = () => {
         <main className="mx-auto max-w-6xl pt-4">
           <Banner title="Merchant Dashboard" />
           <h2 className="my-8 text-2xl font-bold text-center">Order History</h2>
-          {order.map((ord) => (
-            <OrderCard isMerchant order={ord} />
+          {order.map((ord, i) => (
+            <OrderCard key={i} isMerchant order={ord} />
           ))}
         </main>
       </div>

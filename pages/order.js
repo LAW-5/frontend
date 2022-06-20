@@ -7,7 +7,7 @@ import order, { selectOrderData } from "../redux/features/order";
 import { formatIndonesianCurrency } from "../utils/string";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
-import { getAllPromo, usePromo } from "../models/promo";
+import { getAllPromo, pakaiPromo } from "../models/promo";
 import { placeOrder } from "../models/order";
 import { decreaseBalance, getBalance } from "../models/payment";
 
@@ -43,7 +43,7 @@ export default function Home() {
           Math.floor((promoFound.percentage / 100) * totalPesanan)
         );
         setPromo(promoValue);
-        usePromo(promoFound.id);
+        pakaiPromo(promoFound.id);
       }
     }
   };
